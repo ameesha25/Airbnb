@@ -90,15 +90,14 @@ const disabledDates=useMemo(()=>{
    ]);
    useEffect(()=>{
     if(dateRange.startDate && dateRange.endDate){
-      const dayCount=differenceInCalendarDays(
+      let dayCount=differenceInCalendarDays(
         dateRange.endDate,
         dateRange.startDate
       );
+      dayCount = dayCount === 0 ? 1 : dayCount; // Ensure at least 1 night
 
-      if(dayCount && listing.price){
+      if(listing.price){
         setTotalprice(dayCount * listing.price);
-      }else{
-        setTotalprice(listing.price);
       }
     }
    },[dateRange,listing.price]);
@@ -147,14 +146,14 @@ const disabledDates=useMemo(()=>{
             "
             >
               <ListingReservation
-               price={listing.price}
-               totalPrice={totalPrice}
-               onChangeDate={(value)=>setDateRange(value)}
-               dateRange={dateRange}
-               onSubmit={onCreateReservation}
-               disabledDates={disabledDates}
-
-              />
+  price={listing.price}
+  totalPrice={totalPrice}
+  onChangeDate={(value) => setDateRange(value)}
+  dateRange={dateRange}
+  onSubmit={onCreateReservation}
+  disabledDates={disabledDates}
+  disabled={isLoading} // Pass loading state
+/>
 
             </div>
 

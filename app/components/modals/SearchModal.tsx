@@ -21,19 +21,19 @@ enum STEPS{
     INFO=2
 }
 const SearchModal = () => {
-    const router=useRouter();
-    const params =useSearchParams
-    const searchModal=useSearchModal();
+    const router = useRouter();
+    const params = useSearchParams(); // <-- FIXED
+    const searchModal = useSearchModal();
 
-    const [location, selectLocation]=useState<CountrySelectValue>();
-    const[step,setStep]=useState(STEPS.LOCATION);
-    const[guestCount,setGuestCount]=useState(1);
-    const[roomCount,setRoomCount]=useState(1);
-    const[bathroomCount,setBathroomCount]=useState(1);
-    const [dateRange,setDateRange]=useState<Range>({
-        startDate:new Date(),
-        endDate:new Date(),
-        key:'selection'
+    const [location, selectLocation] = useState<CountrySelectValue>();
+    const [step, setStep] = useState(STEPS.LOCATION);
+    const [guestCount, setGuestCount] = useState(1);
+    const [roomCount, setRoomCount] = useState(1);
+    const [bathroomCount, setBathroomCount] = useState(1);
+    const [dateRange, setDateRange] = useState<Range>({
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection'
     });
 
     const Map = useMemo(()=>dynamic(()=> import('../Map'),{ssr:false,
@@ -160,7 +160,7 @@ const SearchModal = () => {
             title="Rooms"
             subtitle="How many rooms do you need ?"
             value={roomCount}
-            onChange={(value)=> setGuestCount(value)}
+            onChange={(value)=> setRoomCount(value)} // <-- FIXED
 
             />
             <Counter
