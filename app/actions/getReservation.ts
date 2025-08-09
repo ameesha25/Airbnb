@@ -49,8 +49,11 @@ try{
     
 
 
-} catch(error:any){
-    throw new Error(error);
+} catch(error:unknown){
+    if (error instanceof Error) {
+        throw new Error(error.message);
+    }
+    throw new Error("An unknown error occurred");
 }
 
 }
