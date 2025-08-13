@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 // import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 
-// @ts-expect-error
+// @ts-expect-error: Leaflet icon url override required for custom markers
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: "/marker-icon.png",

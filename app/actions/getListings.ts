@@ -28,7 +28,7 @@ export default async function getListings(
             category
          } = params;
 
-        let query: Record<string, unknown> = {}; 
+        const query: Record<string, unknown> = {}; 
 
         if(userId){
             query.userId=userId;

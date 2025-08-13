@@ -147,7 +147,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
   uploadPreset="preset2"
   options={{ maxFiles: 1 }}
 >
-  {({ open }) => (
+  {() => (
     <div
       onClick={() => {
         console.log("Manual open triggered");
