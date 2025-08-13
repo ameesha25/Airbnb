@@ -12,7 +12,7 @@ export default async function getReservations(
 try{
     const { listingId , userId , authorId }=params;
     
-    const query:any={};
+    const query: Record<string, unknown> = {};
     if(listingId){
         query.listingId=listingId;
     }

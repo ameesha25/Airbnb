@@ -122,6 +122,7 @@ import { useCallback } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 
 declare global {
+  // eslint-disable-next-line no-var
   var cloudinary: any;
 }
 
@@ -131,9 +132,11 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
-  const handleUpload = useCallback((result: any) => {
-    console.log("Cloudinary Upload Result:", result);
-    onChange(result?.info?.secure_url || '');
+  const handleUpload = useCallback((result: unknown) => {
+    if (typeof result === 'object' && result && 'info' in result) {
+      console.log("Cloudinary Upload Result:", result);
+      onChange((result as any)?.info?.secure_url || '');
+    }
   }, [onChange]);
 
   const isValidImage = typeof value === 'string' && value.startsWith('http');
@@ -157,10 +160,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
               multiple: false,
               maxFiles: 1
             },
-            (error: any, result: any) => {
+            (error: unknown, result: unknown) => {
               if (error) {
                 console.error("Upload Error:", error);
-              } else if (result?.event === 'success') {
+              } else if (
+                typeof result === 'object' &&
+                result !== null &&
+                'event' in result &&
+                (result as { event?: string }).event === 'success'
+              ) {
                 console.log("Upload Success:", result);
                 handleUpload(result);
               }

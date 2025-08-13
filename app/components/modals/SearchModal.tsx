@@ -58,12 +58,12 @@ const SearchModal = () => {
             currentQuery=qs.parse(params.toString());
         }
 
-        const updatedQuery: any ={
-            ...currentQuery,
-            locationValue:location?.value,
-            guestCount,
-            roomCount,
-            bathroomCount
+        const updatedQuery: Record<string, unknown> = {
+          ...currentQuery,
+          locationValue: location?.value,
+          guestCount,
+          roomCount,
+          bathroomCount
         };
 
         if(dateRange.startDate){
@@ -74,26 +74,27 @@ const SearchModal = () => {
             updatedQuery.endDate=formatISO(dateRange.endDate);
         }   
 
-        const url =qs.stringifyUrl({
-            url:'/',
-            query:updatedQuery
-        },{skipNull: true});
+        const url = qs.stringifyUrl({
+            url: '/',
+            query: updatedQuery as qs.ParsedQuery<string>
+        }, { skipNull: true });
 
         setStep(STEPS.LOCATION);
         searchModal.onClose();
 
         router.push(url);
 
-    },[
-        step,
-        searchModal,
-        location,
-        router,
-        guestCount,
-        bathroomCount,
-        dateRange,
-        onNext,
-        params 
+    }, [
+      step,
+      searchModal,
+      location,
+      router,
+      guestCount,
+      roomCount, // <-- Add this
+      bathroomCount,
+      dateRange,
+      onNext,
+      params 
     ]);
 
     const actionLabel=useMemo(()=>{

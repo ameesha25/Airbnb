@@ -70,20 +70,16 @@ const RentModal = () => {
     
 
 
-const Map = useMemo(()=>dynamic(()=> import('../Map'),{
-    ssr:false
-}),[location]);    
-
+const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), []);
     
 
-
-    const setCustomervalue=(id: string,value:any)=>{
-        setValue(id,value,{
-            shouldValidate:true,
-            shouldDirty:true,
-            shouldTouch:true,
-        })
-    }
+    const setCustomervalue = (id: string, value: unknown) => {
+        setValue(id, value, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+      };
 
     const onBack =()=>{
         setStep((value)=>value-1);

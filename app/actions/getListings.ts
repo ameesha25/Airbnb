@@ -1,4 +1,3 @@
-import { Reservation } from './../generated/prisma/index.d';
 import prisma from "@/app/libs/prismadb";
 
 export interface IListingParams{
@@ -29,7 +28,7 @@ export default async function getListings(
             category
          } = params;
 
-        let query : any ={}; 
+        let query: Record<string, unknown> = {}; 
 
         if(userId){
             query.userId=userId;
