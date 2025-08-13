@@ -29,6 +29,7 @@ export default async function getListings(
          } = params;
 
         const query: Record<string, unknown> = {}; 
+        
 
         if(userId){
             query.userId=userId;
