@@ -102,6 +102,7 @@
 //         throw new Error("An unknown error occurred");
 //     }
 // }
+import { Prisma } from "@prisma/client";
 import prisma from "@/app/libs/prismadb";
 
 export interface IListingParams {
@@ -130,9 +131,8 @@ export default async function getListings(
             category
         } = params;
 
-        // CORRECTED: Changed 'let' to 'const' and kept 'any' to match your code's intent
-        // while satisfying the linter. A more specific type could be Record<string, any>.
-        const query: any = {};
+        // CORRECTED: Replaced 'any' with the specific type from Prisma.
+        const query: Prisma.ListingWhereInput = {};
 
         if (userId) {
             query.userId = userId;
@@ -191,7 +191,7 @@ export default async function getListings(
 
         return safeListings;
 
-    } catch (error: unknown) { // CORRECTED: Changed 'any' to 'unknown' for safer error handling
+    } catch (error: unknown) {
         if (error instanceof Error) {
             throw new Error(error.message);
         }
