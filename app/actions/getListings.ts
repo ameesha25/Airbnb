@@ -108,14 +108,13 @@ export interface IListingParams {
     userId?: string;
     guestCount?: number;
     roomCount?: number;
-    bathroomCount?: number; // Corrected type from string to number
+    bathroomCount?: number;
     startDate?: string;
     endDate?: string;
     locationValue?: string;
     category?: string;
 }
 
-// CORRECTED: Added the 'async' keyword here
 export default async function getListings(
     params: IListingParams
 ) {
@@ -131,7 +130,9 @@ export default async function getListings(
             category
         } = params;
 
-        let query: any = {};
+        // CORRECTED: Changed 'let' to 'const' and kept 'any' to match your code's intent
+        // while satisfying the linter. A more specific type could be Record<string, any>.
+        const query: any = {};
 
         if (userId) {
             query.userId = userId;
@@ -190,7 +191,10 @@ export default async function getListings(
 
         return safeListings;
 
-    } catch (error: any) {
-        throw new Error(error);
+    } catch (error: unknown) { // CORRECTED: Changed 'any' to 'unknown' for safer error handling
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("An unknown error occurred");
     }
 }
