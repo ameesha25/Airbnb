@@ -1,23 +1,126 @@
+// import prisma from "@/app/libs/prismadb";
+
+// export interface IListingParams{
+//     userId?:string;
+//     guestCount?:number;
+//     roomCount?:number;
+//     bathroomCount?:string;
+//     startDate?:string;
+//     endDate?:string;
+//     locationValue?:string;
+//     category?:string;
+// }
+
+// export default async function getListings(
+//     params : IListingParams
+// ){
+    
+//     try{
+
+//         const { 
+//             userId,
+//             roomCount,
+//             guestCount,
+//             bathroomCount,
+//             locationValue,
+//             startDate,
+//             endDate,
+//             category
+//          } = params;
+
+//         const query: Record<string, unknown> = {}; 
+        
+
+//         if(userId){
+//             query.userId=userId;
+//        }
+//        if(category){
+//         query.category=category;
+//        }
+//        if(roomCount){
+//         query.roomCount={
+//             gte:+roomCount
+//         }
+//        }
+
+//        if(guestCount){
+//         query.guestCount={
+//             gte:+guestCount
+//         }
+//        }
+
+//        if(bathroomCount){
+//         query.bathroomCount={
+//             gte:+bathroomCount
+//         }
+//        }
+
+
+//        if(locationValue){
+//         query.locationValue=locationValue;
+//        }
+
+//        if(startDate && endDate){
+//         query.NOT={
+//             reservations:{
+//                 some:{
+//                     OR:[{
+//                         endDate:{gte: startDate},
+//                         startDate:{ lte:startDate}
+//                     },
+//                     {
+//                         startDate: {lte: endDate},
+//                         endDate:{gte: endDate}
+//                     }
+//                 ]
+//                 }
+//             }
+//         }
+//        }
+
+
+
+//     const listings=await prisma.listing.findMany({
+//             where:query,
+//             orderBy:{
+//                 createdAt:'desc'
+//             }
+//         });
+
+//         const safeListings = listings.map((listing)=>({
+//             ...listing,
+//             createdAt:listing.createdAt.toISOString(),
+
+//         }));
+
+//         return safeListings;
+
+//     } catch (error: unknown) {
+//         if (error instanceof Error) {
+//             throw new Error(error.message);
+//         }
+//         throw new Error("An unknown error occurred");
+//     }
+// }
 import prisma from "@/app/libs/prismadb";
 
-export interface IListingParams{
-    userId?:string;
-    guestCount?:number;
-    roomCount?:number;
-    bathroomCount?:string;
-    startDate?:string;
-    endDate?:string;
-    locationValue?:string;
-    category?:string;
+export interface IListingParams {
+    userId?: string;
+    guestCount?: number;
+    roomCount?: number;
+    bathroomCount?: number; // Corrected type from string to number
+    startDate?: string;
+    endDate?: string;
+    locationValue?: string;
+    category?: string;
 }
 
+// CORRECTED: Added the 'async' keyword here
 export default async function getListings(
-    params : IListingParams
-){
-    
-    try{
-
-        const { 
+    params: IListingParams
+) {
+    try {
+        const {
             userId,
             roomCount,
             guestCount,
@@ -26,79 +129,68 @@ export default async function getListings(
             startDate,
             endDate,
             category
-         } = params;
+        } = params;
 
-        const query: Record<string, unknown> = {}; 
-        
+        let query: any = {};
 
-        if(userId){
-            query.userId=userId;
-       }
-       if(category){
-        query.category=category;
-       }
-       if(roomCount){
-        query.roomCount={
-            gte:+roomCount
+        if (userId) {
+            query.userId = userId;
         }
-       }
-
-       if(guestCount){
-        query.guestCount={
-            gte:+guestCount
+        if (category) {
+            query.category = category;
         }
-       }
-
-       if(bathroomCount){
-        query.bathroomCount={
-            gte:+bathroomCount
+        if (roomCount) {
+            query.roomCount = {
+                gte: +roomCount
+            }
         }
-       }
-
-
-       if(locationValue){
-        query.locationValue=locationValue;
-       }
-
-       if(startDate && endDate){
-        query.NOT={
-            reservations:{
-                some:{
-                    OR:[{
-                        endDate:{gte: startDate},
-                        startDate:{ lte:startDate}
-                    },
-                    {
-                        startDate: {lte: endDate},
-                        endDate:{gte: endDate}
+        if (guestCount) {
+            query.guestCount = {
+                gte: +guestCount
+            }
+        }
+        if (bathroomCount) {
+            query.bathroomCount = {
+                gte: +bathroomCount
+            }
+        }
+        if (locationValue) {
+            query.locationValue = locationValue;
+        }
+        if (startDate && endDate) {
+            query.NOT = {
+                reservations: {
+                    some: {
+                        OR: [
+                            {
+                                endDate: { gte: startDate },
+                                startDate: { lte: startDate }
+                            },
+                            {
+                                startDate: { lte: endDate },
+                                endDate: { gte: endDate }
+                            }
+                        ]
                     }
-                ]
                 }
             }
         }
-       }
 
-
-
-    const listings=await prisma.listing.findMany({
-            where:query,
-            orderBy:{
-                createdAt:'desc'
+        const listings = await prisma.listing.findMany({
+            where: query,
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 
-        const safeListings = listings.map((listing)=>({
+        const safeListings = listings.map((listing) => ({
             ...listing,
-            createdAt:listing.createdAt.toISOString(),
-
+            createdAt: listing.createdAt.toISOString(),
         }));
 
         return safeListings;
 
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            throw new Error(error.message);
-        }
-        throw new Error("An unknown error occurred");
+    } catch (error: any) {
+        throw new Error(error);
     }
 }
