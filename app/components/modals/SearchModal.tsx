@@ -107,7 +107,7 @@ const SearchModal = () => {
             return undefined;
         }
         return 'Back';
-    },[]);
+    },[step]);
 
     let bodyContent=(
         <div className=" flex flex-col gap-8">
