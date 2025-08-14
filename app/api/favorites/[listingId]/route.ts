@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from "next/server";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
@@ -25,7 +23,8 @@ export async function POST(
         throw new Error('Invalid ID');
     }
 
-    let favoriteIds = [...(currentUser.favoriteIds || [])];
+    // CORRECTED: Changed 'let' to 'const' as per the linter's suggestion.
+    const favoriteIds = [...(currentUser.favoriteIds || [])];
 
     favoriteIds.push(listingId);
 
@@ -57,6 +56,7 @@ export async function DELETE(
         throw new Error('Invalid ID');
     }
 
+    // This 'let' is correct because the variable is reassigned below.
     let favoriteIds = [...(currentUser.favoriteIds || [])];
 
     favoriteIds = favoriteIds.filter((id) => id !== listingId);
