@@ -237,6 +237,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
     const info = result.info as { secure_url: string };
     onChange(info.secure_url);
   }, [onChange]);
+  
+  // FIX: This line asserts that TbPhotoPlus is a valid component type.
+  const Icon = TbPhotoPlus as React.ElementType;
 
   return (
     <CldUploadWidget
@@ -267,7 +270,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
               text-neutral-600
             "
           >
-            <TbPhotoPlus size={50} />
+            {/* FIX: The new 'Icon' variable is used here instead of TbPhotoPlus directly. */}
+            <Icon size={50} />
             <div className="font-semibold text-lg">
               Click to Upload
             </div>
