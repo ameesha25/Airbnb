@@ -1,4 +1,6 @@
+// Forcing a new commit to fix Vercel build
 import { NextResponse } from "next/server";
+// ... rest of your file
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from '@/app/libs/prismadb';
