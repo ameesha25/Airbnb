@@ -1,11 +1,12 @@
 'use client';
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import{SafeUser} from "../types";
+import React from "react"; // Import React for ElementType
+import { SafeUser } from "../types";
 import useFavorite from "../hooks/useFavorite";
 
-interface HeartButtonProps{
-    listingId:string;
+interface HeartButtonProps {
+    listingId: string;
     currentUser?: SafeUser | null;
 }
 
@@ -13,40 +14,43 @@ const HeartButton: React.FC<HeartButtonProps> = ({
     listingId,
     currentUser
 }) => {
-    const {hasFavorited,toggleFavorite}=useFavorite({
-      listingId,
-      currentUser
+    const { hasFavorited, toggleFavorite } = useFavorite({
+        listingId,
+        currentUser
     });
 
-  return (
-    <div
-    onClick={toggleFavorite} 
-    className="
-       relative 
-       hover:opacity-80
-       transitions
+    // FIX: Assert the types of the icon components to resolve the JSX error.
+    const OutlineHeart = AiOutlineHeart as React.ElementType;
+    const FillHeart = AiFillHeart as React.ElementType;
 
-       cursor-pointer
-    "
-     >
-        <AiOutlineHeart
-        size={28}
-        className="
-         fill-white 
-         absolute
-         -top-[2px]
-         -right-[2px]
-        "
-        />
-        <AiFillHeart
-        size={24}
-        className={
-            hasFavorited?'fill-rose-500' : 'fill-neutral-500/70'
-        }
-        />
-     
-    </div>
-  );
+    return (
+        <div
+            onClick={toggleFavorite}
+            className="
+                relative 
+                hover:opacity-80
+                transition
+                cursor-pointer
+            "
+        >
+            {/* Use the new, correctly-typed variables */}
+            <OutlineHeart
+                size={28}
+                className="
+                    fill-white 
+                    absolute
+                    -top-[2px]
+                    -right-[2px]
+                "
+            />
+            <FillHeart
+                size={24}
+                className={
+                    hasFavorited ? 'fill-rose-500' : 'fill-neutral-500/70'
+                }
+            />
+        </div>
+    );
 }
 
 export default HeartButton;

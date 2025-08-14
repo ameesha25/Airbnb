@@ -1,19 +1,18 @@
 'use client';
-import {IconType} from 'react-icons';
-import {useRouter, useSearchParams} from "next/navigation";
+
+import { IconType } from 'react-icons';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from 'react';
-import qs, { ParsedQuery } from "query-string";
+import qs from "query-string";
 
-interface CategoryBoxProps{
+interface CategoryBoxProps {
     icon: IconType;
-    label:string;
+    label: string;
     selected?: boolean;
-
 }
 
-
-const CategoryBox: React.FC<CategoryBoxProps>=  ({
-    icon:Icon,
+const CategoryBox: React.FC<CategoryBoxProps> = ({
+    icon: Icon,
     label,
     selected
 }) => {
@@ -21,56 +20,57 @@ const CategoryBox: React.FC<CategoryBoxProps>=  ({
     const params = useSearchParams();
 
     const handleClick = useCallback(() => {
-  let currentQuery: ParsedQuery<string> = {};
-  if (params) {
-    currentQuery = qs.parse(params.toString());
-  }
+        let currentQuery = {};
 
-  const updatedQuery: ParsedQuery<string> = {
-    ...currentQuery,
-    category: label
-  };
+        if (params) {
+            currentQuery = qs.parse(params.toString());
+        }
 
-  if (params?.get('category') === label) {
-    delete updatedQuery.category;
-  }
+        const updatedQuery: any = {
+            ...currentQuery,
+            category: label
+        };
 
-  const url = qs.stringifyUrl({
-    url: '/',
-    query: updatedQuery
-  }, { skipNull: true });
+        if (params?.get('category') === label) {
+            delete updatedQuery.category;
+        }
 
-  router.push(url);
+        const url = qs.stringifyUrl({
+            url: '/',
+            query: updatedQuery
+        }, { skipNull: true });
 
-}, [label, params, router]);
+        router.push(url);
+    }, [label, params, router]);
 
-  return (
+    // FIX: This type assertion resolves the JSX error.
+    const IconComponent = Icon as React.ElementType;
 
-    <div 
-    onClick={handleClick}
-    className={`
-    flex
-    flex-col
-    items-center
-    justify-center
-    gap-2
-    p-3
-    border-b-2
-    hover:text-neutral-800
-    transition
-    cursor-pointer
-    ${selected ? ' border-b-neutral-800' : 'border-transparent'}
-    ${selected ? 'text-neutral-800' : 'text-neutral-500'}
-    `}>
-
-        <Icon size={26}/>
-        <div className=" font-medium text-sm">
-            {label}
-
+    return (
+        <div
+            onClick={handleClick}
+            className={`
+                flex
+                flex-col
+                items-center
+                justify-center
+                gap-2
+                p-3
+                border-b-2
+                hover:text-neutral-800
+                transition
+                cursor-pointer
+                ${selected ? 'border-b-neutral-800' : 'border-transparent'}
+                ${selected ? 'text-neutral-800' : 'text-neutral-500'}
+            `}
+        >
+            {/* FIX: Use the new, correctly-typed variable here */}
+            <IconComponent size={26} />
+            <div className="font-medium text-sm">
+                {label}
+            </div>
         </div>
-      
-    </div>
-  )
+    )
 }
 
 export default CategoryBox;
