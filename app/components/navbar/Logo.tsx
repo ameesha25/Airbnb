@@ -12,7 +12,8 @@ const Logo = () => {
     "cursor-pointer"
     height={100}
     width={100}
-    src="/images/logo12.png"
+    // src="/Users/ameeshabaghel/Desktop/NestAway.png"
+    src="/images/NestAway.png" 
     priority
     />
   )
